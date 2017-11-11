@@ -1,0 +1,14 @@
+{
+  "name": "matt9mg/doctrine-encryption-bundle",
+  "type": "library",
+  "description": "Doctrine Encryption Library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matthew Thomas",
+    }
+  ],
+  "require": {
+    "php": "^7.1.3"
+  }
+}
