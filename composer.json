@@ -13,7 +13,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Matt9mg\\Encryption\\": "Matt9mg/Encryption/"
+      "Matt9mg\\Encryption\\": ""
     }
   }
 }
