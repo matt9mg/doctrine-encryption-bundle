@@ -7,7 +7,7 @@ services:
       - '%matt9mg_doctrine_encryption.iv%'
       - '%matt9mg_doctrine_encryption.suffix%'
 
-  Matt9mg\Encryption\Subscribe\DoctrineEncryptionSubscriber:
+  Matt9mg\Encryption\Subscriber\DoctrineEncryptionSubscriber:
     arguments:
       - "@service_container"
     tags:
