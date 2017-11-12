@@ -8,6 +8,7 @@
 
 namespace Matt9mg\Encryption\DependencyInjection;
 
+use Matt9mg\Encryption\Encryptor\EncryptorInterface;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -82,6 +83,11 @@ class DoctrineEncryptionExtension extends Extension
 
         if (!isset($config[Configuration::ENCRYPTOR_CLASS])) {
             $config[Configuration::ENCRYPTOR_CLASS] = OpenSSL::class;
+        } else {
+            $refClass = new \ReflectionClass($config[Configuration::ENCRYPTOR_CLASS]);
+            if (!$refClass->implementsInterface(EncryptorInterface::class)) {
+                throw new \RuntimeException('Encryptor class must implements interface ' . EncryptorInterface::class);
+            }
         }
     }
 }
