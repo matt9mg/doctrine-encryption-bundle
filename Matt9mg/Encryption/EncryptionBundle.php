@@ -6,7 +6,7 @@
  * Time: 23:40
  */
 
-namespace EncryptionBundle;
+namespace Matt9mg\Encryption;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
