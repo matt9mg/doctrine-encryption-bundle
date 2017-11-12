@@ -38,10 +38,9 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
 
     /**
      * DoctrineEncryptionSubscriber constructor.
-     * @param Reader $annReader
-     * @param EncryptorInterface $encryptor
+     * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container, Reader $annReader, EncryptorInterface $encryptor)
+    public function __construct(ContainerInterface $container)
     {
         $this->annReader = $container->get('annotation_reader');
         $this->encryptor = $container->get($container->getParameter(Configuration::ROOT . '.' . Configuration::ENCRYPTOR_CLASS));
