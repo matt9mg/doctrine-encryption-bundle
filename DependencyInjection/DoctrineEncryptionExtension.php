@@ -8,9 +8,10 @@
 
 namespace Matt9mg\Encryption\DependencyInjection;
 
-
 use Matt9mg\Encryption\Encryptor\OpenSSL;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -27,25 +28,55 @@ class DoctrineEncryptionExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if(!isset($config[Configuration::KEY])) {
-            throw new \RunTimeException('A key must be specified for Matt9mgDoctrineEncryptionBundle.');
+        $this->validateConfiguration($config);
+        $this->setDefaults($config);
+
+        $container->setParameter('matt9mg_doctrine_encryption.class', $config[Configuration::ENCRYPTOR_CLASS]);
+        $container->setParameter('matt9mg_doctrine_encryption.iv', $config[Configuration::ENCRYPTOR_IV]);
+        $container->setParameter('matt9mg_doctrine_encryption.key', $config[Configuration::KEY]);
+        $container->setParameter('matt9mg_doctrine_encryption.method', $config[Configuration::ENCRYPTOR_METHOD]);
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAlias(): string
+    {
+        return Configuration::ROOT;
+    }
+
+    /**
+     * Validate the configuration
+     *
+     * @param array $config
+     */
+    private function validateConfiguration(array $config)
+    {
+        if (!isset($config[Configuration::KEY])) {
+            throw new \RunTimeException('A KEY must be specified for Matt9mgDoctrineEncryptionBundle.');
         }
 
-        if(!isset($config[Configuration::ENCRYPTOR_METHOD])) {
+        if (!isset($config[Configuration::ENCRYPTOR_IV])) {
+            throw new \RunTimeException('A IV must be specified for Matt9mgDoctrineEncryptionBundle.');
+        }
+    }
+
+    /**
+     * Checks the config and set defaults if none are applied
+     *
+     * @param array $config
+     */
+    private function setDefaults(array &$config)
+    {
+        if (!isset($config[Configuration::ENCRYPTOR_METHOD])) {
             $config[Configuration::ENCRYPTOR_METHOD] = 'AES-256-CBC';
         }
 
-        if(!isset($config[Configuration::ENCRYPTOR_CLASS])) {
+        if (!isset($config[Configuration::ENCRYPTOR_CLASS])) {
             $config[Configuration::ENCRYPTOR_CLASS] = OpenSSL::class;
         }
-
-        $container->setParameter('matt9mg_doctrine_encryption.encryptor_class', $config[Configuration::ENCRYPTOR_CLASS]);
-        $container->setParameter('matt9mg_doctrine_encryption.encryptor_method', $config[Configuration::ENCRYPTOR_METHOD]);
-        $container->setParameter('matt9mg_doctrine_encryption.key', $config[Configuration::KEY]);
-    }
-
-    public function getAlias()
-    {
-        return 'matt9mg_doctrine_encryption';
     }
 }

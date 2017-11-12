@@ -18,9 +18,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     const KEY = 'key';
-    const ENCRYPTOR_METHOD = 'encryptor_method';
-    const ENCRYPTOR_CLASS = 'encryptor_class';
-
+    const ENCRYPTOR_METHOD = 'method';
+    const ENCRYPTOR_CLASS = 'class';
+    const ENCRYPTOR_IV = 'iv';
+    const ROOT = 'matt9mg_doctrine_encryption';
 
     /**
      * @return TreeBuilder
@@ -28,7 +29,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('matt9mg_doctrine_encryption');
+        $rootNode = $treeBuilder->root(self::ROOT);
 
         $rootNode
             ->children()
@@ -37,6 +38,8 @@ class Configuration implements ConfigurationInterface
             ->scalarNode(self::ENCRYPTOR_METHOD)
             ->end()
             ->scalarNode(self::ENCRYPTOR_CLASS)
+            ->end()
+            ->scalarNode(self::ENCRYPTOR_IV)
             ->end()
             ->end();
 
