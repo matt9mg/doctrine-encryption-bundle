@@ -35,6 +35,7 @@ class DoctrineEncryptionExtension extends Extension
         $container->setParameter('matt9mg_doctrine_encryption.iv', $config[Configuration::ENCRYPTOR_IV]);
         $container->setParameter('matt9mg_doctrine_encryption.key', $config[Configuration::KEY]);
         $container->setParameter('matt9mg_doctrine_encryption.method', $config[Configuration::ENCRYPTOR_METHOD]);
+        $container->setParameter('matt9mg_doctrine_encryption.suffix', $config[Configuration::ENCRYPTOR_SUFFIX]);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
@@ -61,6 +62,10 @@ class DoctrineEncryptionExtension extends Extension
 
         if (!isset($config[Configuration::ENCRYPTOR_IV])) {
             throw new \RunTimeException('A IV must be specified for Matt9mgDoctrineEncryptionBundle.');
+        }
+
+        if(!isset($config[Configuration::ENCRYPTOR_SUFFIX])) {
+            throw new \RuntimeException('An encryption Suffix must be specified for Matt9mgDoctrineEncryptionBundle.');
         }
     }
 

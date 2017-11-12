@@ -1,7 +1,14 @@
 services:
-    Matt9mg\Encryption\Encryptor\OpenSSL:
-      public: true
-      arguments:
-        - '%matt9mg_doctrine_encryption.key%'
-        - '%matt9mg_doctrine_encryption.method%'
-        - '%matt9mg_doctrine_encryption.iv%'
+  Matt9mg\Encryption\Encryptor\OpenSSL:
+    public: true
+    arguments:
+      - '%matt9mg_doctrine_encryption.key%'
+      - '%matt9mg_doctrine_encryption.method%'
+      - '%matt9mg_doctrine_encryption.iv%'
+      - '%matt9mg_doctrine_encryption.suffix%'
+
+  Matt9mg\Encryption\Subscribe\DoctrineEncryptionSubscriber:
+    arguments:
+      - "@service_container"
+    tags:
+      - { name: doctrine.event_subscriber }

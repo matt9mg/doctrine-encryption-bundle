@@ -21,12 +21,13 @@ class Configuration implements ConfigurationInterface
     const ENCRYPTOR_METHOD = 'method';
     const ENCRYPTOR_CLASS = 'class';
     const ENCRYPTOR_IV = 'iv';
+    const ENCRYPTOR_SUFFIX = 'suffix';
     const ROOT = 'matt9mg_doctrine_encryption';
 
-    /**
-     * @return TreeBuilder
-     */
-    public function getConfigTreeBuilder(): TreeBuilder
+        /**
+         * @return TreeBuilder
+         */
+        public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root(self::ROOT);
@@ -40,6 +41,8 @@ class Configuration implements ConfigurationInterface
             ->scalarNode(self::ENCRYPTOR_CLASS)
             ->end()
             ->scalarNode(self::ENCRYPTOR_IV)
+            ->end()
+            ->scalarNode(self::ENCRYPTOR_SUFFIX)
             ->end()
             ->end();
 

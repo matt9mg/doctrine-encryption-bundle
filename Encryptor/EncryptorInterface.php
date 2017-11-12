@@ -28,4 +28,11 @@ interface EncryptorInterface
      * @return string
      */
     public function decrypt(string $data): string;
+
+    /**
+     * Adds a suffix to the encryptor
+     *
+     * @return string
+     */
+    public function getSuffix(): string;
 }
