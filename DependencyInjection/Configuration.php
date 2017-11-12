@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('doctrine_encryption');
+        $rootNode = $treeBuilder->root('matt9mg_doctrine_encryption');
 
         $rootNode
             ->children()
