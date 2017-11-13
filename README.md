@@ -83,3 +83,4 @@ Yes there a loads of lovely unit tests :)
 ## Roadmap
 - [ ] Form inputs
 - [ ] Command line util
+- [ ] Travis integration
