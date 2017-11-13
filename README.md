@@ -81,5 +81,5 @@ Create a class that extends ```Matt9mg\Encryption\Encryptor\EncryptorInterface``
 Yes there a loads of lovely unit tests :)
 
 ## Roadmap
-[] - Form inputs
-[] - Command line util
+- [ ] Form inputs
+- [ ] Command line util
