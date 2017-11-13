@@ -1,15 +1,17 @@
 {
   "name": "matt9mg/doctrine-encryption-bundle",
-  "type": "library",
-  "description": "Doctrine Encryption Library",
+  "type": "symfony-bundle",
+  "description": "Doctrine encryption bundle for Symfony to aid with GDPR and general field encryption",
   "license": "MIT",
+  "keywords": ["doctrine", "orm", "encryption", "symfony", "bundle", "gdpr", "matt9mg"],
+  "homepage": "https://github.com/matt9mg/doctrine-encryption-bundle",
   "authors": [
     {
       "name": "Matthew Thomas"
     }
   ],
   "require": {
-    "php": "^7"
+    "php": ">=7"
   },
   "autoload": {
     "psr-4": {
