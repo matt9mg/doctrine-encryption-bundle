@@ -75,7 +75,7 @@ The above will auto encrypt on `prePersist` and `preUpdate`
 You'll notice there is no postLoad event to convert back to decrypted. Experience with doctrine is that as the entity is changed it adds it to the queue to be flushed. Say if you have an account with 1000 users each user would be decrypted meaning re saved. 
 
 ## How to add a custom Encryptor
-Create a class that extends ```php Matt9mg\Encryption\Encryptor\EncryptorInterface```. Then register as mentioned in the above config.
+Create a class that extends ```Matt9mg\Encryption\Encryptor\EncryptorInterface```. Then register as mentioned in the above config.
 
 ## Tests
 Yes there a loads of lovely unit tests :)
