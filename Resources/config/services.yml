@@ -14,15 +14,14 @@ services:
     arguments:
       - '@annotation_reader'
       - '@Matt9mg\Encryption\Bridge\Bridge'
-      - '%matt9mg_doctrine_encryption.class%'
     tags:
       - { name: doctrine.event_subscriber }
 
-  Matt9mg\Encryption\Factory\Factory:
-    public: true
-
   Matt9mg\Encryption\Bridge\Bridge:
     public: true
+    arguments:
+      - '@service_container'
+      - '%matt9mg_doctrine_encryption.class%'
 
   Matt9mg\Encryption\Twig\EncryptionExtension:
     arguments:

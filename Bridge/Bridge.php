@@ -10,7 +10,7 @@ namespace Matt9mg\Encryption\Bridge;
 
 
 use Matt9mg\Encryption\Encryptor\EncryptorInterface;
-use Matt9mg\Encryption\Factory\Factory;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Bridge
@@ -19,53 +19,49 @@ use Matt9mg\Encryption\Factory\Factory;
 class Bridge
 {
     /**
-     * @var Factory
+     * @var EncryptorInterface
      */
-    private $factory;
+    private $encryptor;
 
     /**
      * Bridge constructor.
-     * @param Factory $factory
+     * @param ContainerInterface $container
+     * @param string $service
      */
-    public function __construct(Factory $factory)
+    public function __construct(ContainerInterface $container, string $service)
     {
-        $this->factory = $factory;
+        $this->encryptor = $container->get($service);
     }
 
     /**
      * Encrypt the data and adds the suffix
      *
      * @param string $data
-     * @param string $service
      * @return string
      */
-    public function encrypt(string $data, string $service): string
+    public function encrypt(string $data): string
     {
-        $service = $this->factory->get($service);
-
-        return $service->encrypt($data) . $service->getSuffix();
+        return $this->encryptor->encrypt($data) . $this->encryptor->getSuffix();
     }
 
     /**
      * Decrypt the data and adds the suffix
      *
      * @param string $data
-     * @param string $service
      * @return string
      */
-    public function decrypt(string $data, string $service): string
+    public function decrypt(string $data): string
     {
-        return $this->factory->get($service)->decrypt($data);
+        return $this->encryptor->decrypt($data);
     }
 
     /**
      * Returns the encryptor service from the factory
      *
-     * @param string $service
      * @return EncryptorInterface
      */
-    public function getEncryptor(string $service): EncryptorInterface
+    public function getEncryptor(): EncryptorInterface
     {
-        return $this->factory->get($service);
+        return $this->encryptor;
     }
 }

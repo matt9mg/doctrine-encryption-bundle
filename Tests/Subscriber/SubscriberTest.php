@@ -14,8 +14,8 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Matt9mg\Encryption\Annotation\Encrypted;
 use Matt9mg\Encryption\Bridge\Bridge;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
-use Matt9mg\Encryption\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class SubscriberTest
@@ -32,12 +32,12 @@ class SubscriberTest extends TestCase
 
     public function setUp()
     {
-        $factor = $this->getMockBuilder(Factory::class)->disableOriginalConstructor()->getMock();
+        $factor = $this->getMockBuilder(ContainerInterface::class)->disableOriginalConstructor()->getMock();
         $factor->expects($this->any())
             ->method('get')
             ->willReturn(new OpenSSL('key', 'AES-256-CBC', 'IV', 'SUFFIX'));
 
-        $bridge = new Bridge($factor);
+        $bridge = new Bridge($factor, OpenSSL::class);
 
         $this->class = new class
         {
@@ -64,7 +64,7 @@ class SubscriberTest extends TestCase
             }
         };
 
-        $this->subscriber = new DoctrineEncryptionSubscriber(new AnnotationReader(), $bridge, OpenSSL::class);
+        $this->subscriber = new DoctrineEncryptionSubscriber(new AnnotationReader(), $bridge);
     }
 
 

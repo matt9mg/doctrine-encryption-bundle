@@ -22,19 +22,12 @@ class EncryptionExtension extends \Twig_Extension
     private $bridge;
 
     /**
-     * @var string
-     */
-    private $service;
-
-    /**
      * EncryptionExtension constructor.
      * @param Bridge $bridge
-     * @param string $service
      */
-    public function __construct(Bridge $bridge, string $service)
+    public function __construct(Bridge $bridge)
     {
         $this->bridge = $bridge;
-        $this->service = $service;
     }
 
     /**
@@ -55,6 +48,6 @@ class EncryptionExtension extends \Twig_Extension
      */
     public function decrypt(string $data): string
     {
-        return $this->bridge->decrypt($data, $this->service);
+        return $this->bridge->decrypt($data);
     }
 }

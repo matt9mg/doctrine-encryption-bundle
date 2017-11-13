@@ -10,8 +10,8 @@ namespace Matt9mg\Encryption\Tests\Bridge;
 
 use Matt9mg\Encryption\Bridge\Bridge;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
-use Matt9mg\Encryption\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class BridgeTest
@@ -25,7 +25,7 @@ class BridgeTest extends TestCase
     {
         $encryptor = new OpenSSL('KEY', 'AES-256-CBC', 'IV', '<SUFFIX>');
 
-        $factory = $this->getMockBuilder(Factory::class)
+        $factory = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -33,7 +33,7 @@ class BridgeTest extends TestCase
             ->method('get')
             ->willReturn($encryptor);
 
-        $this->bridge = new Bridge($factory);
+        $this->bridge = new Bridge($factory, OpenSSL::class);
     }
 
     /**
@@ -43,10 +43,10 @@ class BridgeTest extends TestCase
      */
     public function testEncryption(string $data, string $expected)
     {
-        $encrypted = $this->bridge->encrypt($data, OpenSSL::class);
+        $encrypted = $this->bridge->encrypt($data);
 
         $this->assertSame($expected, $encrypted);
-        $this->assertSame($data, $this->bridge->decrypt($encrypted, OpenSSL::class));
+        $this->assertSame($data, $this->bridge->decrypt($encrypted));
     }
 
     /**

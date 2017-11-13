@@ -35,21 +35,14 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
     private $annReader;
 
     /**
-     * @var string
-     */
-    private $service;
-
-    /**
      * DoctrineEncryptionSubscriber constructor.
      * @param Reader $reader
      * @param Bridge $bridge
-     * @param string $service
      */
-    public function __construct(Reader $reader, Bridge $bridge, string $service)
+    public function __construct(Reader $reader, Bridge $bridge)
     {
         $this->annReader = $reader;
         $this->bridge = $bridge;
-        $this->service = $service;
     }
 
     /**
@@ -121,7 +114,7 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
                  */
                 if ($refProperty->isPublic()) {
                     $propName = $refProperty->getName();
-                    $entity->$propName = $this->bridge->encrypt($refProperty->getValue(), $this->service);
+                    $entity->$propName = $this->bridge->encrypt($refProperty->getValue());
                 } else {
                     //If private or protected check if there is an getter/setter for the property, based on the $methodName
                     if ($reflectionClass->hasMethod($getter = 'get' . $methodName) && $reflectionClass->hasMethod($setter = 'set' . $methodName)) {
@@ -133,11 +126,11 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
                         }
 
                         if (!is_null($getInformation) and !empty($getInformation)) {
-                            $suffix = $this->bridge->getEncryptor($this->service)->getSuffix();
+                            $suffix = $this->bridge->getEncryptor()->getSuffix();
 
                             $start = strlen($suffix) * -1;
                             if (substr($entity->$getter(), $start) !== $suffix) {
-                                $currentPropValue = $this->bridge->encrypt($entity->$getter(), $this->service);
+                                $currentPropValue = $this->bridge->encrypt($entity->$getter());
                                 $entity->$setter($currentPropValue);
                             }
                         }

@@ -10,8 +10,8 @@ namespace Matt9mg\Encryption\Twig;
 
 use Matt9mg\Encryption\Bridge\Bridge;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
-use Matt9mg\Encryption\Factory\Factory;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class TwigTest
@@ -26,14 +26,14 @@ class TwigTest extends TestCase
 
     public function setUp()
     {
-        $factor = $this->getMockBuilder(Factory::class)->disableOriginalConstructor()->getMock();
+        $factor = $this->getMockBuilder(ContainerInterface::class)->disableOriginalConstructor()->getMock();
         $factor->expects($this->any())
             ->method('get')
             ->willReturn(new OpenSSL('key', 'AES-256-CBC', 'IV', 'SUFFIX'));
 
-        $bridge = new Bridge($factor);
+        $bridge = new Bridge($factor, OpenSSL::class);
 
-        $this->twigExtension = new EncryptionExtension($bridge, OpenSSL::class);
+        $this->twigExtension = new EncryptionExtension($bridge);
     }
 
     /**
