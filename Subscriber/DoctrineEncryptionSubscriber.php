@@ -188,7 +188,7 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
      *
      * @return array
      */
-    function getClassProperties(string $className): array
+    public function getClassProperties(string $className): array
     {
 
         $reflectionClass = new \ReflectionClass($className);
