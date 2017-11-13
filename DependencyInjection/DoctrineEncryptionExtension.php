@@ -86,7 +86,7 @@ class DoctrineEncryptionExtension extends Extension
         } else {
             $refClass = new \ReflectionClass($config[Configuration::ENCRYPTOR_CLASS]);
             if (!$refClass->implementsInterface(EncryptorInterface::class)) {
-                throw new \RuntimeException('Encryptor class must implements interface ' . EncryptorInterface::class);
+                throw new \RuntimeException('Encryptor must implements interface ' . EncryptorInterface::class);
             }
         }
     }

@@ -16,9 +16,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Embedded;
 use Matt9mg\Encryption\Annotation\Encrypted;
-use Matt9mg\Encryption\DependencyInjection\Configuration;
-use Matt9mg\Encryption\Encryptor\EncryptorInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Matt9mg\Encryption\Bridge\Bridge;
 
 /**
  * Class DoctrineEncryptionSubscriber
@@ -27,9 +25,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DoctrineEncryptionSubscriber implements EventSubscriber
 {
     /**
-     * @var EncryptorInterface
+     * @var Bridge
      */
-    private $encryptor;
+    private $bridge;
 
     /**
      * @var Reader
@@ -37,13 +35,21 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
     private $annReader;
 
     /**
-     * DoctrineEncryptionSubscriber constructor.
-     * @param ContainerInterface $container
+     * @var string
      */
-    public function __construct(ContainerInterface $container)
+    private $service;
+
+    /**
+     * DoctrineEncryptionSubscriber constructor.
+     * @param Reader $reader
+     * @param Bridge $bridge
+     * @param string $service
+     */
+    public function __construct(Reader $reader, Bridge $bridge, string $service)
     {
-        $this->annReader = $container->get('annotation_reader');
-        $this->encryptor = $container->get($container->getParameter(Configuration::ROOT . '.' . Configuration::ENCRYPTOR_CLASS));
+        $this->annReader = $reader;
+        $this->bridge = $bridge;
+        $this->service = $service;
     }
 
     /**
@@ -115,7 +121,7 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
                  */
                 if ($refProperty->isPublic()) {
                     $propName = $refProperty->getName();
-                    $entity->$propName = $this->encryptor->encrypt($refProperty->getValue());
+                    $entity->$propName = $this->bridge->encrypt($refProperty->getValue(), $this->service);
                 } else {
                     //If private or protected check if there is an getter/setter for the property, based on the $methodName
                     if ($reflectionClass->hasMethod($getter = 'get' . $methodName) && $reflectionClass->hasMethod($setter = 'set' . $methodName)) {
@@ -127,9 +133,11 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
                         }
 
                         if (!is_null($getInformation) and !empty($getInformation)) {
-                            $start = strlen($this->encryptor->getSuffix()) * -1;
-                            if (substr($entity->$getter(), $start) !== $this->encryptor->getSuffix()) {
-                                $currentPropValue = $this->encryptor->encrypt($entity->$getter());
+                            $suffix = $this->bridge->getEncryptor($this->service)->getSuffix();
+
+                            $start = strlen($suffix) * -1;
+                            if (substr($entity->$getter(), $start) !== $suffix) {
+                                $currentPropValue = $this->bridge->encrypt($entity->$getter(), $this->service);
                                 $entity->$setter($currentPropValue);
                             }
                         }

@@ -3,4 +3,4 @@
 
 Coming SOON! WIP
 
-Just needs tests :)
+# Just tests ad documentation left release sometime today :)

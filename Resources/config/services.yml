@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    autowire: true
+
   Matt9mg\Encryption\Encryptor\OpenSSL:
     public: true
     arguments:
@@ -9,6 +12,14 @@ services:
 
   Matt9mg\Encryption\Subscriber\DoctrineEncryptionSubscriber:
     arguments:
-      - "@service_container"
+      - '@annotation_reader'
+      - '@Matt9mg\Encryption\Bridge\Bridge'
+      - '%matt9mg_doctrine_encryption.class%'
     tags:
       - { name: doctrine.event_subscriber }
+
+  Matt9mg\Encryption\Factory\Factory:
+    public: true
+
+  Matt9mg\Encryption\Bridge\Bridge:
+    public: true

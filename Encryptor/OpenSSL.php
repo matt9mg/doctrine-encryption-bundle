@@ -62,7 +62,7 @@ class OpenSSL implements EncryptorInterface
                 0,
                 $this->generateIVHash()
             )
-        ) . $this->getSuffix();
+        );
     }
 
     /**
