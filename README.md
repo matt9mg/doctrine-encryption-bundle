@@ -1,5 +1,7 @@
 # Doctrine Encryption Bundle
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/5ca1aae2-24ca-48f3-9e1d-e56230d387ac/small.png)](https://insight.sensiolabs.com/projects/5ca1aae2-24ca-48f3-9e1d-e56230d387ac)
+
 With GDPR becoming business critical here's a bundle that handles the data encryption layer.
 
 ## Installation
