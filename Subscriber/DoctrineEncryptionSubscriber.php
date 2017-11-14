@@ -202,3 +202,4 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
         return $propertiesArray;
     }
 }
+
