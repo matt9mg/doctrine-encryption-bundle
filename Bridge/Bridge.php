@@ -10,7 +10,6 @@ namespace Matt9mg\Encryption\Bridge;
 
 
 use Matt9mg\Encryption\Encryptor\EncryptorInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Bridge
@@ -25,12 +24,11 @@ class Bridge
 
     /**
      * Bridge constructor.
-     * @param ContainerInterface $container
-     * @param string $service
+     * @param EncryptorInterface $encryptor
      */
-    public function __construct(ContainerInterface $container, string $service)
+    public function __construct(EncryptorInterface $encryptor)
     {
-        $this->encryptor = $container->get($service);
+        $this->encryptor = $encryptor;
     }
 
     /**

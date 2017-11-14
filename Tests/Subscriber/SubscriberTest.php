@@ -15,8 +15,6 @@ use Matt9mg\Encryption\Annotation\Encrypted;
 use Matt9mg\Encryption\Bridge\Bridge;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Class SubscriberTest
  * @package Matt9mg\Encryption\Subscriber
@@ -32,12 +30,7 @@ class SubscriberTest extends TestCase
 
     public function setUp()
     {
-        $factor = $this->getMockBuilder(ContainerInterface::class)->disableOriginalConstructor()->getMock();
-        $factor->expects($this->any())
-            ->method('get')
-            ->willReturn(new OpenSSL('key', 'AES-256-CBC', 'IV', 'SUFFIX'));
-
-        $bridge = new Bridge($factor, OpenSSL::class);
+        $bridge = new Bridge(new OpenSSL('key', 'AES-256-CBC', 'IV', 'SUFFIX'));
 
         $this->class = new class
         {

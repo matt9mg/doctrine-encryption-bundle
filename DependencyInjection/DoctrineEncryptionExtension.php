@@ -12,6 +12,7 @@ use Matt9mg\Encryption\Encryptor\EncryptorInterface;
 use Matt9mg\Encryption\Encryptor\OpenSSL;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -37,6 +38,16 @@ class DoctrineEncryptionExtension extends Extension
         $container->setParameter('matt9mg_doctrine_encryption.key', $config[Configuration::KEY]);
         $container->setParameter('matt9mg_doctrine_encryption.method', $config[Configuration::ENCRYPTOR_METHOD]);
         $container->setParameter('matt9mg_doctrine_encryption.suffix', $config[Configuration::ENCRYPTOR_SUFFIX]);
+
+
+        $definition = new Definition($config[Configuration::ENCRYPTOR_CLASS], [
+            $container->getParameter('matt9mg_doctrine_encryption.key'),
+            $container->getParameter('matt9mg_doctrine_encryption.method'),
+            $container->getParameter('matt9mg_doctrine_encryption.iv'),
+            $container->getParameter('matt9mg_doctrine_encryption.suffix')
+
+        ]);
+        $container->setDefinition('matt9mg_doctrine_encryption.encryptor', $definition);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');

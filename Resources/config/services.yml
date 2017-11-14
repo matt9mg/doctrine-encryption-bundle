@@ -2,14 +2,6 @@ services:
   _defaults:
     autowire: true
 
-  Matt9mg\Encryption\Encryptor\OpenSSL:
-    public: true
-    arguments:
-      - '%matt9mg_doctrine_encryption.key%'
-      - '%matt9mg_doctrine_encryption.method%'
-      - '%matt9mg_doctrine_encryption.iv%'
-      - '%matt9mg_doctrine_encryption.suffix%'
-
   Matt9mg\Encryption\Subscriber\DoctrineEncryptionSubscriber:
     arguments:
       - '@annotation_reader'
@@ -20,12 +12,10 @@ services:
   Matt9mg\Encryption\Bridge\Bridge:
     public: true
     arguments:
-      - '@service_container'
-      - '%matt9mg_doctrine_encryption.class%'
+      - '@matt9mg_doctrine_encryption.encryptor'
 
   Matt9mg\Encryption\Twig\EncryptionExtension:
     arguments:
       - '@Matt9mg\Encryption\Bridge\Bridge'
-      - '%matt9mg_doctrine_encryption.class%'
     tags:
       - { name: twig.extension }
