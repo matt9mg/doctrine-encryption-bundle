@@ -158,7 +158,7 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
         if ($embeddedProperty->isPublic()) {
             $embeddedEntity = $embeddedProperty->getValue();
         } else {
-            if ($reflectionClass->hasMethod($getter = 'get' . $methodName) && $reflectionClass->hasMethod($setter = 'set' . $methodName)) {
+            if ($reflectionClass->hasMethod($getter = 'get' . $methodName) && $reflectionClass->hasMethod('set' . $methodName)) {
 
                 //Get the information (value) of the property
                 try {
