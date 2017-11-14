@@ -125,7 +125,7 @@ class DoctrineEncryptionSubscriber implements EventSubscriber
                             $getInformation = null;
                         }
 
-                        if (!is_null($getInformation) and !empty($getInformation)) {
+                        if (!is_null($getInformation) && !empty($getInformation)) {
                             $suffix = $this->bridge->getEncryptor()->getSuffix();
 
                             $start = strlen($suffix) * -1;
