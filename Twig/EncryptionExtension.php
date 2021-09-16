@@ -9,14 +9,12 @@
 namespace Matt9mg\Encryption\Twig;
 
 use Matt9mg\Encryption\Bridge\Bridge;
-use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
-use Twig\TwigFilter;
 
 /**
  * Class EncryptionExtension
  * @package Matt9mg\Encryption\Twig
  */
-class EncryptionExtension extends TwigExtension
+class EncryptionExtension extends \Twig_Extension
 {
     /**
      * @var Bridge
@@ -38,7 +36,7 @@ class EncryptionExtension extends TwigExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('decrypt', [$this, 'decrypt'])
+            new \Twig_SimpleFilter('decrypt', [$this, 'decrypt'])
         ];
     }
 
